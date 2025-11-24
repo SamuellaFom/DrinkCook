@@ -1,0 +1,32 @@
+# Node modules & build
+node_modules
+dist
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+
+# TypeScript
+*.tsbuildinfo
+
+# Git
+.git
+.gitignore
+
+# Docker & config
+Dockerfile*
+docker-compose*.yml
+.env*
+*.local
+
+# Tests
+coverage
+*.test.ts
+__tests__/
+
+# IDE / OS
+.vscode
+.idea
+.DS_Store
+Thumbs.db
+
+certs/
