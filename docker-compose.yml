@@ -1,0 +1,54 @@
+services:
+  postgres-pa:
+    image: postgres:latest
+    restart: always
+    container_name: postgres_db_pa
+    env_file:
+      - .env
+    environment:
+      POSTGRES_USER: ${DB_USER}  
+      POSTGRES_PASSWORD: ${DB_PASSWORD}  
+      POSTGRES_DB: ${DB_NAME}
+    volumes:
+      - postgres_pa_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - app-net
+    
+  app-pa:
+    build:
+      context: ./drivn
+      dockerfile: Dockerfile
+    container_name: app_api
+    restart: always
+    ports:
+      - "3000:3000"
+    env_file:
+      - ./drivn/.env.production
+    depends_on:
+      - postgres-pa
+    command: npm run start:prod
+    networks:
+      - app-net
+  
+  front-pa:
+    build:
+      context: ./drivnApp
+      dockerfile: Dockerfile
+    container_name: app_front
+    env_file:
+      - ./drivnApp/.env.production
+    ports:
+      - "8080:80"
+    depends_on:
+      - app-pa
+    restart: always
+    networks:
+      - app-net
+
+volumes:
+  postgres_pa_data:
+
+networks:
+  app-net:
